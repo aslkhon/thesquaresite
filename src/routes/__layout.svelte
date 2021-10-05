@@ -1,11 +1,12 @@
 <script lang="ts">
 	import '../styles/style.scss';
+	import type { SectionType } from '../types';
 	import { ChevronDownIcon, MenuIcon, SearchIcon, XIcon } from 'svelte-feather-icons';
 
 	let navbarOpen: Boolean = false;
 	let footerOpen: Array<Boolean> = [];
 
-	const sections = [
+	const sections: Array<SectionType> = [
 		{
 			title: 'Students',
 			slug: 'students',
@@ -24,7 +25,6 @@
 				}
 			]
 		},
-
 		{
 			title: 'Workaholics',
 			slug: 'workaholics',
@@ -153,7 +153,7 @@
 			</span>
 
 			<div>
-                <a href="who-we-are">Who we are?</a>
+				<a href="who-we-are">Who we are?</a>
 				{#each sections as section}
 					<a href={section.slug}>{section.title}</a>
 				{/each}
@@ -194,7 +194,9 @@
 		</div>
 	</div>
 
-	<p class="copyright">Made with 🧡 by theSquare</p>
+	<div class="copyright">
+		<p>Made with 🧡 by theSquare</p>
+	</div>
 </footer>
 
 <style lang="scss">
@@ -209,13 +211,13 @@
 		}
 	}
 
-    /* Common */
+	/* Common */
 
-    @mixin heading {
-        font-size: 24px;
+	@mixin heading {
+		font-size: 24px;
 		font-family: 'Bebas Neue', 'Impact', sans-serif;
 		font-weight: normal;
-    }
+	}
 
 	/* Navbar */
 
@@ -284,7 +286,7 @@
 		align-items: center;
 		justify-content: center;
 		min-height: 48px;
-        max-width: 48px;
+		max-width: 48px;
 		color: $orange;
 		transition: $fast-transition;
 
@@ -339,17 +341,17 @@
 			align-items: center;
 			justify-content: center;
 			height: 100%;
-            
-            a {
-                @include heading;
 
-                padding: 4px 16px;
-                margin: 2px 0px;
+			a {
+				@include heading;
 
-                &:hover {
-				    background-color: rgba($color: orange, $alpha: 0.2);
-			    }
-            }
+				padding: 4px 16px;
+				margin: 2px 0px;
+
+				&:hover {
+					background-color: rgba($color: orange, $alpha: 0.2);
+				}
+			}
 		}
 	}
 
@@ -384,13 +386,13 @@
 	}
 
 	.footer-heading {
-        @include heading;
+		@include heading;
 
 		@media screen and (min-width: $mobile + 1px) {
 			font-size: 28px;
 		}
 
-        &:hover {
+		&:hover {
 			background-color: rgba($color: white, $alpha: 0.2);
 		}
 	}
@@ -442,9 +444,14 @@
 	}
 
 	.copyright {
-		text-align: center;
-		color: white;
-		font-size: 18px;
-		font-weight: 500;
+		display: flex;
+		justify-content: center;
+
+		p {
+			background-color: white;
+			color: $orange;
+			font-size: 18px;
+			font-weight: 500;
+		}
 	}
 </style>
