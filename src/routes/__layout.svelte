@@ -136,10 +136,10 @@
 			</div>
 		</div>
 		<div class="navbar-sections">
-			<a href="who-we-are">Who we are</a>
+			<a href="/who-we-are">Who we are</a>
 
 			{#each sections as section}
-				<a href={section.slug}>{section.title}</a>
+				<a href="/{section.slug}">{section.title}</a>
 			{/each}
 		</div>
 
@@ -153,9 +153,9 @@
 			</span>
 
 			<div>
-				<a href="who-we-are">Who we are?</a>
+				<a href="/who-we-are">Who we are?</a>
 				{#each sections as section}
-					<a href={section.slug}>{section.title}</a>
+					<a href="/{section.slug}">{section.title}</a>
 				{/each}
 			</div>
 		</div>
@@ -171,7 +171,7 @@
 			{#each sections as section, i}
 				<div>
 					<div class="footer-expandable">
-						<a href={section.slug} class="footer-heading">{section.title}</a>
+						<a href="/{section.slug}" class="footer-heading">{section.title}</a>
 						<span
 							on:click={() => (footerOpen[i] = !footerOpen[i])}
 							style="transform: rotateZ({footerOpen[i] ? '180deg' : '0deg'})"
@@ -182,7 +182,7 @@
 
 					<div class="footer-content {footerOpen[i] ? '' : 'closed'}">
 						{#each section.categories as category}
-							<a href={category.slug}>{category.title}</a>
+							<a href="/{section.slug}/{category.slug}">{category.title}</a>
 						{/each}
 					</div>
 				</div>
@@ -190,7 +190,7 @@
 		</div>
 
 		<div>
-			<a href="who-are-we" class="footer-heading">Who are we?</a>
+			<a href="/who-are-we" class="footer-heading">Who are we?</a>
 		</div>
 	</div>
 
@@ -205,12 +205,17 @@
 	main {
 		background-color: white;
 		margin: 30px;
-
+		padding-bottom: 96px;
+		
 		@media screen and (max-width: $mobile) {
 			margin: 30px 0px;
 		}
+		
+		@media screen and (max-width: $desktop) {
+			padding-bottom: 48px;
+		}
 	}
-
+	
 	/* Common */
 
 	@mixin heading {

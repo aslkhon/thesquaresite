@@ -1,4 +1,4 @@
-/* Data Types */
+/* Common Data Types */
 
 type CategoryType = {
   title: string;

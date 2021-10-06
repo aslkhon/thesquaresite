@@ -1,16 +1,25 @@
-<script>
+<script lang="ts">
 	import ArticleCard from './ArticleCard.svelte';
+
+	type ArticleCardType = {
+		slug: string;
+		imageSrc: string;
+	};
+
+	export let slug: string;
+	export let imageSrc: string;
+	export let articles: Array<ArticleCardType>;
 </script>
 
 <div class="section">
-	<a href="section"
-		><div class="hero" style="background-image: url('assets/images/magazines.webp');" /></a
+	<a href="/{slug}"
+		><div class="hero" style="background-image: url({imageSrc});" /></a
 	>
 
 	<div class="articles">
-		<ArticleCard slug="article" url="assets/images/magazines.webp" />
-		<ArticleCard slug="article" url="assets/images/magazines.webp" />
-		<ArticleCard slug="article" url="assets/images/magazines.webp" />
+		{#each articles as article}
+			<ArticleCard slug={article.slug} url={article.imageSrc} />
+		{/each}
 	</div>
 </div>
 
