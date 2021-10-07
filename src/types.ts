@@ -11,6 +11,11 @@ type SectionType = {
   categories: Array<CategoryType>;
 };
 
+type ArticleCardType = {
+  slug: string;
+  imageSrc: string;
+};
+
 export type {
-  CategoryType, SectionType
+  CategoryType, SectionType, ArticleCardType
 };

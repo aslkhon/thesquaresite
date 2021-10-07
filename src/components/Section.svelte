@@ -1,10 +1,6 @@
 <script lang="ts">
 	import ArticleCard from './ArticleCard.svelte';
-
-	type ArticleCardType = {
-		slug: string;
-		imageSrc: string;
-	};
+	import type { ArticleCardType } from 'src/types';
 
 	export let slug: string;
 	export let imageSrc: string;
@@ -18,7 +14,7 @@
 
 	<div class="articles">
 		{#each articles as article}
-			<ArticleCard slug={article.slug} url={article.imageSrc} />
+			<ArticleCard props={article} />
 		{/each}
 	</div>
 </div>
@@ -26,12 +22,18 @@
 <style lang="scss">
 	@import '../styles/_variables.scss';
 
-	.section {
-		margin: 32px 0px;
-		padding: 0px 64px;
 
+	.section {
+		display: grid;
+		padding: 0px 64px;
+		row-gap: 32px;
+		
 		@media screen and (max-width: $desktop) {
 			padding: 0px 32px;
+		}
+
+		@media screen and (max-width: $tablet) {
+			row-gap: 24px;
 		}
 
 		@media screen and (max-width: $mobile) {
@@ -41,9 +43,7 @@
 
 	.hero {
 		height: calc((100vw - 190px) / 3);
-		background-color: lightgray;
-		background-position: center;
-		background-repeat: no-repeat;
+		background: lightgray no-repeat center;
 		background-size: cover;
 
 		@media (max-width: $mobile) {
@@ -52,12 +52,17 @@
 	}
 
 	.articles {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		column-gap: 32px;
+
+		@media screen and (max-width: $tablet) {
+			column-gap: 24px;
+		}
 
 		@media (max-width: $mobile) {
-			flex-direction: column;
+			grid-template-columns: 1fr;
+			row-gap: 24px;
 		}
 	}
 </style>

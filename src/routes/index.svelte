@@ -34,7 +34,8 @@
 	];
 </script>
 
-{#each sections as section}
+<div class="sections">
+	{#each sections as section}
 	<Section slug={section.slug} imageSrc="assets/images/magazines.webp" articles={
 		[
 			{
@@ -52,3 +53,18 @@
 		]
 	}/>
 {/each}
+</div>
+
+<style lang="scss">
+	@import '../styles/_variables.scss';
+
+	.sections {
+		display: grid;
+		row-gap: 24px;
+		padding-top: 32px;
+
+		@media screen and (max-width: $mobile) {
+			row-gap: 48px;
+		}
+	}
+</style>
