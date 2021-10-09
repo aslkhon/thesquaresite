@@ -16,6 +16,13 @@ type ArticleCardType = {
   imageSrc: string;
 };
 
+type AuthorBlockType = {
+  name: string;
+  imageSrc: string;
+  email: string;
+  bio: string;
+}
+
 export type {
-  CategoryType, SectionType, ArticleCardType
-};
+  CategoryType, SectionType, ArticleCardType, AuthorBlockType
+}

@@ -39,15 +39,15 @@
 	<Section slug={section.slug} imageSrc="assets/images/magazines.webp" articles={
 		[
 			{
-				slug: 'smth',
+				slug: `/${section.slug}/category/smth`,
 				imageSrc: 'assets/images/magazines.webp'
 			},
 			{
-				slug: 'smth',
+				slug: `/${section.slug}/category/smth`,
 				imageSrc: 'assets/images/magazines.webp'
 			},
 			{
-				slug: 'smth',
+				slug: `/${section.slug}/category/smth`,
 				imageSrc: 'assets/images/magazines.webp'
 			},
 		]
