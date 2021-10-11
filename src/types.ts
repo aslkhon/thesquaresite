@@ -1,12 +1,20 @@
 /* Common Data Types */
 
+type SectionsQueryResult= {
+  data: {
+    sections: Array<SectionType>
+  }
+}
+
 type CategoryType = {
-  title: string;
+  id: string;
+  name: string;
   slug: string;
 };
 
 type SectionType = {
-  title: string;
+  id: string;
+  name: string;
   slug: string;
   categories: Array<CategoryType>;
 };
@@ -24,5 +32,5 @@ type AuthorBlockType = {
 }
 
 export type {
-  CategoryType, SectionType, ArticleCardType, AuthorBlockType
+  SectionsQueryResult, CategoryType, SectionType, ArticleCardType, AuthorBlockType
 }

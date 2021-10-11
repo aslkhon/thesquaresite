@@ -46,7 +46,7 @@
 
 	<div class="divider" />
 
-	<AuthorBlock authorData={{ imageSrc: 'https://i.ytimg.com/vi/8O482Hcvj4A/maxresdefault.jpg', name: 'Parker', email: 'aslkho.mail@gmail.com', bio: 'Some <b>long bio</b> bio' }} />
+	<AuthorBlock authorData={{ imageSrc: 'https://images.unsplash.com/photo-1585909695284-32d2985ac9c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80', name: 'Parker', email: 'aslkho.mail@gmail.com', bio: 'Some <b>long bio</b> bio' }} />
 </div>
 
 <style lang="scss">

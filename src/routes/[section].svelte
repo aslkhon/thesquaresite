@@ -1,14 +1,19 @@
-<script context="module">
-	export async function load({ page, fetch }) {
-		return {
-			props: {
-				section: page.params.section
-			}
-		};
-	}
-</script>
+<script>
+import Section from "src/components/Section.svelte";
 
-<script lang="ts">
+</script>
+<script context="module" lang="ts">
+	import { getClient } from 'svelte-apollo';
+	import { Readable, readable } from 'svelte/store';
+	import { GET_SECTION } from '../queries';
+
+	type SectionType = {
+		name: string;
+		slug: string;
+		description: string;
+		image: { formats: JSON };
+	};
+
 	type CategoryType = {
 		name: string;
 		description: string;
@@ -16,30 +21,63 @@
 		imageSrc: string;
 	};
 
+
+	async function getSection(section: string): Promise<SectionType> {
+		return (
+			await getClient().query({
+				query: GET_SECTION,
+				variables: {
+					slug: section
+				}
+			})
+		).data.sections;
+	}
+
+	export let section: Readable<Promise<SectionType>>;
+
+	export async function load({ page, fetch }) {
+		section = readable(getSection(page.params.section));
+
+		return {
+			props: {
+				section: page.params.section
+			}
+		};
+	}
+
 	const description: string = 'A description is going to be <b>added</b>';
 	const categories: Array<CategoryType> = [
 		{
 			name: 'Category',
-			description: '<b>Description</b> that definately should be longer. However, it is what we have now, and we must treat it as the most valueable text in the world, at least for now',
+			description:
+				'<b>Description</b> that definately should be longer. However, it is what we have now, and we must treat it as the most valueable text in the world, at least for now',
 			slug: 'category',
 			imageSrc: '/assets/images/magazines.webp'
 		},
 		{
 			name: 'Category',
-			description: '<b>Description</b> that definately should be longer. However, it is what we have now, and we must treat it as the most valueable text in the world, at least for now',
+			description:
+				'<b>Description</b> that definately should be longer. However, it is what we have now, and we must treat it as the most valueable text in the world, at least for now',
 			slug: 'category',
 			imageSrc: '/assets/images/magazines.webp'
 		},
 		{
 			name: 'Category',
-			description: '<b>Description</b> that definately should be longer. However, it is what we have now, and we must treat it as the most valueable text in the world, at least for now',
+			description:
+				'<b>Description</b> that definately should be longer. However, it is what we have now, and we must treat it as the most valueable text in the world, at least for now',
 			slug: 'category',
 			imageSrc: '/assets/images/magazines.webp'
 		}
 	];
 
-	export let section: string;
+	// export let section: string;
 </script>
+
+{#if $section == []}
+	Loading...
+{:else} 
+	{JSON.stringify(section)}
+{/if}
 
 <div class="content">
 	<h1>{section.toUpperCase()}</h1>

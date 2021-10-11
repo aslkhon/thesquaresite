@@ -1,203 +1,119 @@
 <script lang="ts">
 	import '../styles/style.scss';
-	import type { SectionType } from '../types';
 	import { ChevronDownIcon, MenuIcon, SearchIcon, XIcon } from 'svelte-feather-icons';
+	import { ApolloClient, InMemoryCache } from '@apollo/client/core';
+	import { setClient } from 'svelte-apollo';
+	import { GET_SECTIONS } from "../queries";
+	import type { SectionType } from '../types';
+
+	const client = new ApolloClient({
+		uri: 'http://localhost:1337/graphql',
+		cache: new InMemoryCache(),
+		ssrMode: true
+	});
+
+	setClient(client);
+
+	async function getSections(): Promise<Array<SectionType>> {
+		return (await client.query({
+			query: GET_SECTIONS
+		})).data.sections;
+	}
 
 	let navbarOpen: Boolean = false;
-	let footerOpen: Array<Boolean> = [];
-
-	const sections: Array<SectionType> = [
-		{
-			title: 'Students',
-			slug: 'students',
-			categories: [
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				}
-			]
-		},
-		{
-			title: 'Workaholics',
-			slug: 'workaholics',
-			categories: [
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				}
-			]
-		},
-		{
-			title: 'Lifehackers',
-			slug: 'lifehackers',
-			categories: [
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				}
-			]
-		},
-		{
-			title: 'Stories',
-			slug: 'stories',
-			categories: [
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				}
-			]
-		},
-		{
-			title: 'Culturephiles',
-			slug: 'culturephiles',
-			categories: [
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				}
-			]
-		},
-		{
-			title: 'Kvadratjon',
-			slug: 'kvadratjon',
-			categories: [
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				},
-				{
-					title: 'Scholarships',
-					slug: 'scholarships'
-				}
-			]
-		}
-	];
+	let footerOpen: Array<boolean> = [];
 </script>
 
-<main>
-	<nav>
-		<div class="upper">
-			<div>
-				<a href="/">
-					<img src="assets/logo.svg" alt="TheSquare" />
-				</a>
+{#await getSections()}
+	<div
+		style="display: flex; width: 100vw; height: 100vh; align-items: center; justify-content: center"
+	>
+		<b>Loading...</b>
+	</div>
+{:then sections}
+	<main>
+		<nav>
+			<div class="upper">
+				<div>
+					<a href="/">
+						<img src="assets/logo.svg" alt="TheSquare" />
+					</a>
+				</div>
+
+				<span class="menu-button" on:click={() => (navbarOpen = true)}>
+					<MenuIcon class="icon" size="36" />
+				</span>
+
+				<div class="search-button">
+					<SearchIcon class="icon" size="36" />
+				</div>
 			</div>
+			<div class="navbar-sections">
+				<a href="/who-we-are">Who we are</a>
 
-			<span class="menu-button" on:click={() => (navbarOpen = true)}>
-				<MenuIcon class="icon" size="36" />
-			</span>
-
-			<div class="search-button">
-				<SearchIcon class="icon" size="36" />
-			</div>
-		</div>
-		<div class="navbar-sections">
-			<a href="/who-we-are">Who we are</a>
-
-			{#each sections as section}
-				<a href="/{section.slug}">{section.title}</a>
-			{/each}
-		</div>
-
-		<div
-			class="drawer"
-			style="transform: translateY({navbarOpen ? '0vh' : '-85vh'});
-            box-shadow: 0px 0px 0px 100vh rgba(0, 0, 0, {navbarOpen ? '0.5' : '0'});"
-		>
-			<span class="close-button" on:click={() => (navbarOpen = false)}>
-				<XIcon class="icon" size="36" />
-			</span>
-
-			<div>
-				<a href="/who-we-are">Who we are?</a>
 				{#each sections as section}
-					<a href="/{section.slug}">{section.title}</a>
+					<a href="/{section.slug}">{section.name}</a>
 				{/each}
 			</div>
-		</div>
-	</nav>
 
-	<!-- Slot for page content -->
-	<slot />
-</main>
+			<div
+				class="drawer"
+				style="transform: translateY({navbarOpen ? '0vh' : '-85vh'});
+            box-shadow: 0px 0px 0px 100vh rgba(0, 0, 0, {navbarOpen ? '0.5' : '0'});"
+			>
+				<span class="close-button" on:click={() => (navbarOpen = false)}>
+					<XIcon class="icon" size="36" />
+				</span>
 
-<footer>
-	<div class="outer">
-		<div class="footer-sections">
-			{#each sections as section, i}
 				<div>
-					<div class="footer-expandable">
-						<a href="/{section.slug}" class="footer-heading">{section.title}</a>
-						<span
-							on:click={() => (footerOpen[i] = !footerOpen[i])}
-							style="transform: rotateZ({footerOpen[i] ? '180deg' : '0deg'})"
-						>
-							<ChevronDownIcon size="24" />
-						</span>
-					</div>
-
-					<div class="footer-content {footerOpen[i] ? '' : 'closed'}">
-						{#each section.categories as category}
-							<a href="/{section.slug}/{category.slug}">{category.title}</a>
-						{/each}
-					</div>
+					<a href="/who-we-are">Who we are?</a>
+					{#each sections as section}
+						<a href="/{section.slug}">{section.name}</a>
+					{/each}
 				</div>
-			{/each}
+			</div>
+		</nav>
+
+		<slot />
+	</main>
+
+	<footer>
+		<div class="outer">
+			<div class="footer-sections">
+				{#each sections as section, i}
+					<div>
+						<div class="footer-expandable">
+							<a href="/{section.slug}" class="footer-heading">{section.name}</a>
+							<span
+								on:click={() => (footerOpen[i] = !footerOpen[i])}
+								style="transform: rotateZ({footerOpen[i] ? '180deg' : '0deg'})"
+							>
+								<ChevronDownIcon size="24" />
+							</span>
+						</div>
+
+						<div
+							class="footer-content {footerOpen[i] ? '' : 'closed'}"
+							style="max-height: {section.categories.length * 54}px;"
+						>
+							{#each section.categories as category}
+								<a href="/{section.slug}/{category.slug}">{category.name}</a>
+							{/each}
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			<div>
+				<a href="/who-are-we" class="footer-heading">Who are we?</a>
+			</div>
 		</div>
 
-		<div>
-			<a href="/who-are-we" class="footer-heading">Who are we?</a>
+		<div class="copyright">
+			<p>Made with 🧡 by theSquare</p>
 		</div>
-	</div>
-
-	<div class="copyright">
-		<p>Made with 🧡 by theSquare</p>
-	</div>
-</footer>
+	</footer>
+{/await}
 
 <style lang="scss">
 	@import '../styles/_variables.scss';
@@ -206,16 +122,16 @@
 		background-color: white;
 		margin: 30px;
 		padding-bottom: 96px;
-		
+
 		@media screen and (max-width: $mobile) {
 			margin: 30px 0px;
 		}
-		
+
 		@media screen and (max-width: $desktop) {
 			padding-bottom: 48px;
 		}
 	}
-	
+
 	/* Common */
 
 	@mixin heading {
@@ -423,7 +339,6 @@
 		flex-direction: column;
 		align-items: flex-start;
 		overflow: hidden;
-		max-height: 162px;
 		transition: $normal-transition;
 
 		a {
@@ -444,7 +359,7 @@
 
 	.closed {
 		@media screen and (max-width: $mobile) {
-			max-height: 0px;
+			max-height: 0px !important;
 		}
 	}
 
